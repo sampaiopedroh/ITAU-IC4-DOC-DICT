@@ -1,30 +1,239 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * ==============================================
+ * 1. CORES E VARIÁVEIS
+ * ==============================================
  */
-
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-color-primary: #ec7000;
+  --ifm-color-primary-dark: #d46500;
+  --ifm-navbar-height: 4rem;
+
+  /* Cores StackSpot Light */
+  --search-bg: #f3f4f6;
+  --search-border: #e5e7eb;
+  --search-text: #1f2937;
+  --search-placeholder: #6b7280;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #ff8c33;
+  --ifm-color-primary-dark: #e67e2e;
+  
+  /* Cores StackSpot Dark */
+  --search-bg: #2b2d31;
+  --search-border: #3e4045;
+  --search-text: #ffffff;       /* Texto branco */
+  --search-placeholder: #a1a1aa; /* Placeholder cinza claro */
 }
+
+/**
+ * ==============================================
+ * 2. HEADER (NAVBAR)
+ * ==============================================
+ */
+.navbar {
+  box-shadow: 0 1px 0 rgba(255,255,255,0.1);
+  border-bottom: none;
+}
+.navbar__logo img { height: 28px; }
+
+.navbar__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 
+   ==============================================
+   ESTILO STACKSPOT (Busca na Direita)
+   ==============================================
+*/
+@media (min-width: 997px) {
+
+  .navbar__items--right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  /* 1. O CONTAINER DA BUSCA */
+  .navbar__items--right div[class*='search'] {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    
+    width: 240px !important;
+    height: 36px !important;
+    
+    background-color: var(--search-bg) !important;
+    border: 1px solid var(--search-border) !important;
+    border-radius: 6px !important;
+    
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    /* Reset de posicionamento */
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+
+  /* Foco no container */
+  .navbar__items--right div[class*='search']:focus-within {
+    border-color: var(--ifm-color-primary) !important;
+    box-shadow: 0 0 0 1px var(--ifm-color-primary) inset !important;
+  }
+
+  /* 
+     2. O INPUT (Correção de funcionamento)
+  */
+  .navbar__items--right input {
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    
+    font-size: 14px !important;
+    /* Cor do texto digitado */
+    color: var(--search-text) !important; 
+    
+    /* Espaço para o ícone da lupa na esquerda */
+    padding: 0 10px 0 36px !important; 
+    
+    /* Garante que o input fique SOBRE o ícone de background para ser clicável */
+    position: relative; 
+    z-index: 2; 
+    pointer-events: auto !important;
+  }
+
+  /* 
+     3. PLACEHOLDER (Texto "Buscar...")
+     Garante a cor correta
+  */
+  .navbar__items--right input::placeholder {
+    color: var(--search-placeholder) !important;
+    opacity: 1; /* Firefox precisa disso */
+  }
+
+  /* 
+     4. ÍCONE DE LUPA
+  */
+  .navbar__items--right div[class*='search']::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%239ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 1; /* Fica atrás do input (visualmente abaixo, mas visível pq input é transparente) */
+    pointer-events: none;
+  }
+
+  /* 5. Limpeza de elementos do plugin */
+  .navbar__items--right div[class*='search'] button,
+  .navbar__items--right div[class*='search'] label,
+  .navbar__items--right div[class*='search'] span[class*='icon'] {
+    display: none !important;
+  }
+
+  /* 6. Atalho (Ctrl+K) */
+  .navbar__items--right kbd {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-block;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--search-border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    color: var(--search-placeholder);
+    pointer-events: none;
+    z-index: 3; /* Acima do input para ser visível, mas pointer-events none permite clicar através */
+  }
+}
+
+/* 
+   7. CORREÇÃO DO BOTÃO DE TEMA 
+*/
+.navbar__items--right .clean-btn {
+  display: flex !important;
+  padding: 5px !important;
+}
+
+/*
+   ==============================================
+   ESTILO DO MODAL DE RESULTADOS
+   ==============================================
+*/
+.cmfcmf-search-results {
+  position: absolute;
+  right: 0; /* Alinha à direita da janela */
+  top: 50px; /* Logo abaixo da navbar */
+  width: 500px;
+  max-width: 90vw;
+  background-color: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  max-height: 60vh;
+  overflow-y: auto;
+  z-index: 10000;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cmfcmf-search-results li { margin: 0; padding: 0; }
+
+.cmfcmf-search-results a {
+  display: block;
+  padding: 15px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+}
+
+.cmfcmf-search-results a:hover,
+.cmfcmf-search-results a[aria-selected="true"] {
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-primary);
+}
+
+.cmfcmf-search-results header {
+  padding: 8px 15px;
+  background-color: var(--ifm-color-emphasis-200);
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-700);
+}
+
+/**
+ * ==============================================
+ * 3. FOOTER E UI GERAL
+ * ==============================================
+ */
+.footer { background-color: #1a1a1a; color: #fff; padding: 3rem 0; }
+.footer__title { color: var(--ifm-color-primary); font-weight: bold; margin-bottom: 0.5rem; }
+.footer__link-item { color: #ccc; display: inline-flex; align-items: center; }
+.footer__link-item:hover { color: var(--ifm-color-primary); text-decoration: none; }
+.footer__link-item svg { display: none !important; }
+
+@media (min-width: 997px) {
+  .footer .container .row { display: flex; justify-content: space-between; }
+  .footer .col:first-child { text-align: left; }
+  .footer .col:last-child { text-align: right; }
+}
+.footer__bottom { margin-top: 2rem; text-align: center; border-top: 1px solid #333; padding-top: 1rem; color: #888; }
+
+.button { font-weight: 600; border-radius: 4px; text-transform: none; }
+.button--primary { background-color: var(--ifm-color-primary); border-color: var(--ifm-color-primary); color: #fff; }
+.button--primary:hover { background-color: var(--ifm-color-primary-dark); border-color: var(--ifm-color-primary-dark); }
+article img { border-radius: 8px; border: 1px solid var(--ifm-color-emphasis-200); }

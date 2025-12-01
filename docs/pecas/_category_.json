@@ -1,0 +1,8 @@
+{
+  "label": "Peças",
+  "position": 2,
+  "link": {
+    "type": "doc",
+    "id": "pecas/index" 
+  }
+}

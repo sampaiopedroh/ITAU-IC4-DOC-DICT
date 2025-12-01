@@ -1,49 +1,87 @@
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
+import Link from '@docusaurus/Link';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Documentação Geral',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Visão unificada de todas as peças, tutoriais e arquitetura da Squad Pré-Pix.
       </>
     ),
+    link: '/docs/documentacao-geral',
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Peças',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Detalhes técnicos de cada microsserviço e componente (Validador, Sincronizador, etc).
       </>
     ),
+    link: '/docs/pecas',
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Tutoriais',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Guias passo-a-passo para operações comuns, onboardings e resolução de problemas.
       </>
     ),
+    link: '/docs/tutoriais',
+  },
+  {
+    title: 'Manual da DICT (BCB)',
+    description: (
+      <>
+        Documentação oficial e regulatória do Banco Central (PDF v8.0).
+      </>
+    ),
+    link: 'https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/X_ManualOperacionaldoDICT.pdf',
+    external: true,
+  },
+  {
+    title: 'API da DICT (BCB)',
+    description: (
+      <>
+        Swagger e especificações técnicas oficiais da API do DICT (OpenAPI v2.8.0).
+      </>
+    ),
+    link: 'https://www.bcb.gov.br/content/estabilidadefinanceira/pix/API-DICT.html',
+    external: true,
+  },
+  {
+    title: 'Adicionais',
+    description: (
+      <>
+        Glossário de termos, ferramentas de apoio e documentações periféricas.
+      </>
+    ),
+    link: '/docs/adicionais',
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({title, description, link, external}) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
+      <div className="text--center padding-horiz--md margin-bottom--lg">
+        <div className={clsx('card h-100', styles.featureCard)}>
+          <div className="card__header">
+            <Heading as="h3">{title}</Heading>
+          </div>
+          <div className="card__body">
+            <p>{description}</p>
+          </div>
+          <div className="card__footer">
+            <Link
+              className="button button--secondary button--block"
+              to={link}
+              target={external ? '_blank' : '_self'}>
+              Acessar
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

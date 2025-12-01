@@ -101,6 +101,15 @@ const config = {
             ],
           },
           {
+            title: 'Testes', // Lado Direito (Via CSS customizado)
+            items: [
+              {
+                label: 'Pasta de testes',
+                to: '/docs/testes',
+              },
+            ],
+          },
+          {
             title: 'Navegação', // Lado Direito (Via CSS customizado)
             items: [
               {

@@ -8,22 +8,23 @@
   --ifm-color-primary-dark: #d46500;
   --ifm-navbar-height: 4rem;
 
-  /* Cores StackSpot Light */
-  --search-bg: #f3f4f6;
-  --search-border: #e5e7eb;
+  /* Cores da Barra de Pesquisa (Tema Claro) */
+  --search-bg: #f3f4f6;          
+  --search-border: transparent;  
   --search-text: #1f2937;
   --search-placeholder: #6b7280;
+  --search-icon: #9ca3af;
 }
 
 [data-theme='dark'] {
   --ifm-color-primary: #ff8c33;
   --ifm-color-primary-dark: #e67e2e;
   
-  /* Cores StackSpot Dark */
-  --search-bg: #2b2d31;
-  --search-border: #3e4045;
-  --search-text: #ffffff;       /* Texto branco */
-  --search-placeholder: #a1a1aa; /* Placeholder cinza claro */
+  /* Cores da Barra de Pesquisa (Tema Escuro - Estilo StackSpot) */
+  --search-bg: #2b2d31;          
+  --search-border: #3e4045;      
+  --search-text: #e4e4e7;
+  --search-icon: #a1a1aa;
 }
 
 /**
@@ -37,202 +38,231 @@
 }
 .navbar__logo img { height: 28px; }
 
-.navbar__inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* 
+   ==============================================
+   ESTILO BARRA DE PESQUISA (Igual StackSpot - ROBUSTO)
+   ==============================================
+*/
+
+/* Container dos itens da direita */
+.navbar__items--right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px;
 }
 
 /* 
-   ==============================================
-   ESTILO STACKSPOT (Busca na Direita)
-   ==============================================
+   O Container da Busca (A caixa cinza)
+   Identifica o DIV que contém o input, independente das classes geradas
 */
-@media (min-width: 997px) {
+.navbar__items--right > div:has(input[type="search"]),
+.navbar__items--right > div:has(input[type="text"]) {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  
+  width: 260px !important;
+  height: 40px !important;
+  
+  background-color: var(--search-bg) !important;
+  border: 1px solid var(--search-border) !important;
+  border-radius: 8px !important;
+  
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: all 0.2s ease;
+}
 
-  .navbar__items--right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
+/* Fallback para navegadores antigos (Safari antigo) */
+.navbar__items--right > div:nth-last-child(2) {
+  width: 260px;
+}
 
-  /* 1. O CONTAINER DA BUSCA */
-  .navbar__items--right div[class*='search'] {
-    position: relative !important;
-    display: flex !important;
-    align-items: center !important;
-    
-    width: 240px !important;
-    height: 36px !important;
-    
-    background-color: var(--search-bg) !important;
-    border: 1px solid var(--search-border) !important;
-    border-radius: 6px !important;
-    
-    padding: 0 !important;
-    margin: 0 !important;
-    
-    /* Reset de posicionamento */
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-  }
+/* Efeito Hover/Foco na caixa */
+.navbar__items--right > div:has(input):hover,
+.navbar__items--right > div:has(input):focus-within {
+  border-color: var(--ifm-color-primary) !important;
+  background-color: var(--ifm-background-color) !important;
+}
 
-  /* Foco no container */
-  .navbar__items--right div[class*='search']:focus-within {
-    border-color: var(--ifm-color-primary) !important;
-    box-shadow: 0 0 0 1px var(--ifm-color-primary) inset !important;
-  }
+/* O Input Real (Transparente por cima) */
+.navbar__items--right input[type="search"],
+.navbar__items--right input[type="text"] {
+  width: 100% !important;
+  height: 100% !important;
+  
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  
+  padding: 0 50px 0 40px !important; /* Espaço ícone (esq) e atalho (dir) */
+  
+  font-size: 14px !important;
+  color: var(--search-text) !important;
+  cursor: text !important;
+  
+  position: static !important;
+  appearance: none !important;
+}
 
-  /* 
-     2. O INPUT (Correção de funcionamento)
-  */
-  .navbar__items--right input {
-    width: 100% !important;
-    height: 100% !important;
+/* Placeholder */
+.navbar__items--right input::placeholder {
+  color: var(--search-placeholder) !important;
+  opacity: 1;
+}
+
+/* Ícone de Lupa (via CSS) */
+.navbar__items--right > div:has(input)::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%239ca3af" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Atalho "Ctrl K" (via CSS) */
+.navbar__items--right > div:has(input)::after {
+  content: 'Ctrl K';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--search-placeholder);
+  background-color: var(--ifm-background-color);
+  border: 1px solid var(--search-border);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Limpeza de lixo visual do plugin */
+.navbar__items--right button[class*="search"],
+.navbar__items--right svg[class*="search"],
+.navbar__items--right label {
+  display: none !important;
+}
+
+/* Responsivo Mobile */
+@media (max-width: 996px) {
+  .navbar__items--right > div:has(input) {
+    width: 36px !important;
     background: transparent !important;
     border: none !important;
-    outline: none !important;
-    
-    font-size: 14px !important;
-    /* Cor do texto digitado */
-    color: var(--search-text) !important; 
-    
-    /* Espaço para o ícone da lupa na esquerda */
-    padding: 0 10px 0 36px !important; 
-    
-    /* Garante que o input fique SOBRE o ícone de background para ser clicável */
-    position: relative; 
-    z-index: 2; 
-    pointer-events: auto !important;
+    cursor: pointer;
   }
-
-  /* 
-     3. PLACEHOLDER (Texto "Buscar...")
-     Garante a cor correta
-  */
-  .navbar__items--right input::placeholder {
-    color: var(--search-placeholder) !important;
-    opacity: 1; /* Firefox precisa disso */
+  .navbar__items--right input {
+    padding: 0 !important;
+    text-indent: -9999px;
   }
-
-  /* 
-     4. ÍCONE DE LUPA
-  */
-  .navbar__items--right div[class*='search']::before {
-    content: '';
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%239ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
-    background-repeat: no-repeat;
-    background-size: contain;
-    z-index: 1; /* Fica atrás do input (visualmente abaixo, mas visível pq input é transparente) */
-    pointer-events: none;
+  .navbar__items--right > div:has(input)::before {
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.3);
   }
-
-  /* 5. Limpeza de elementos do plugin */
-  .navbar__items--right div[class*='search'] button,
-  .navbar__items--right div[class*='search'] label,
-  .navbar__items--right div[class*='search'] span[class*='icon'] {
+  .navbar__items--right > div:has(input)::after {
     display: none !important;
   }
-
-  /* 6. Atalho (Ctrl+K) */
-  .navbar__items--right kbd {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: inline-block;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--search-border);
-    border-radius: 4px;
-    padding: 2px 6px;
-    font-size: 11px;
-    color: var(--search-placeholder);
-    pointer-events: none;
-    z-index: 3; /* Acima do input para ser visível, mas pointer-events none permite clicar através */
-  }
 }
 
-/* 
-   7. CORREÇÃO DO BOTÃO DE TEMA 
-*/
-.navbar__items--right .clean-btn {
-  display: flex !important;
-  padding: 5px !important;
-}
-
-/*
-   ==============================================
-   ESTILO DO MODAL DE RESULTADOS
-   ==============================================
-*/
+/* Dropdown de Resultados */
 .cmfcmf-search-results {
-  position: absolute;
-  right: 0; /* Alinha à direita da janela */
-  top: 50px; /* Logo abaixo da navbar */
-  width: 500px;
-  max-width: 90vw;
-  background-color: var(--ifm-background-color);
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  max-height: 60vh;
-  overflow-y: auto;
-  z-index: 10000;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    background-color: var(--ifm-background-surface-color) !important;
+    border: 1px solid var(--search-border) !important;
+    border-radius: 8px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    margin-top: 10px;
 }
-
-.cmfcmf-search-results li { margin: 0; padding: 0; }
-
-.cmfcmf-search-results a {
-  display: block;
-  padding: 15px;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  color: var(--ifm-font-color-base);
-  text-decoration: none;
+.cmfcmf-search-results a[aria-selected="true"], 
+.cmfcmf-search-results a:hover {
+  background-color: var(--ifm-color-primary) !important;
+  color: white !important;
 }
-
-.cmfcmf-search-results a:hover,
-.cmfcmf-search-results a[aria-selected="true"] {
-  background-color: var(--ifm-color-emphasis-100);
-  color: var(--ifm-color-primary);
-}
-
-.cmfcmf-search-results header {
-  padding: 8px 15px;
-  background-color: var(--ifm-color-emphasis-200);
-  font-weight: bold;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  color: var(--ifm-color-emphasis-700);
+.cmfcmf-search-results mark {
+  background: rgba(236, 112, 0, 0.3);
+  color: inherit;
 }
 
 /**
  * ==============================================
- * 3. FOOTER E UI GERAL
+ * 3. FOOTER
  * ==============================================
  */
-.footer { background-color: #1a1a1a; color: #fff; padding: 3rem 0; }
-.footer__title { color: var(--ifm-color-primary); font-weight: bold; margin-bottom: 0.5rem; }
-.footer__link-item { color: #ccc; display: inline-flex; align-items: center; }
-.footer__link-item:hover { color: var(--ifm-color-primary); text-decoration: none; }
-.footer__link-item svg { display: none !important; }
-
-@media (min-width: 997px) {
-  .footer .container .row { display: flex; justify-content: space-between; }
-  .footer .col:first-child { text-align: left; }
-  .footer .col:last-child { text-align: right; }
+.footer { 
+  background-color: #1a1a1a; 
+  color: #fff; 
+  padding: 4rem 0 2rem 0; 
 }
-.footer__bottom { margin-top: 2rem; text-align: center; border-top: 1px solid #333; padding-top: 1rem; color: #888; }
 
+.footer__title { 
+  color: var(--ifm-color-primary); 
+  font-weight: bold; 
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.footer__link-item { 
+  color: #b0b0b0; 
+  display: inline-flex; 
+  align-items: center; 
+  margin-bottom: 0.5rem;
+}
+
+.footer__link-item:hover { 
+  color: var(--ifm-color-primary); 
+  text-decoration: none; 
+}
+
+.footer__link-item svg { 
+  display: none !important; /* Remove ícone de link externo */
+}
+
+/* Alinhamento das 3 Colunas no Desktop */
+@media (min-width: 997px) {
+  .footer .container .row { 
+    display: flex; 
+    justify-content: space-between; 
+  }
+  
+  /* 1. Coluna Esquerda (Contato) */
+  .footer .col:nth-child(1) { 
+    text-align: left; 
+  }
+  
+  /* 2. Coluna do Meio (Testes) */
+  .footer .col:nth-child(2) { 
+    text-align: center; 
+  }
+  
+  /* 3. Coluna Direita (Navegação) */
+  .footer .col:nth-child(3) { 
+    text-align: right; 
+  }
+}
+
+.footer__bottom { 
+  margin-top: 3rem; 
+  text-align: center; 
+  border-top: 1px solid #333; 
+  padding-top: 2rem; 
+  color: #666; 
+  font-size: 0.85rem;
+}
+
+/* Botões e Imagens Gerais */
 .button { font-weight: 600; border-radius: 4px; text-transform: none; }
 .button--primary { background-color: var(--ifm-color-primary); border-color: var(--ifm-color-primary); color: #fff; }
 .button--primary:hover { background-color: var(--ifm-color-primary-dark); border-color: var(--ifm-color-primary-dark); }
